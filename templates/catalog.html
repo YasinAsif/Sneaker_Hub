@@ -34,6 +34,13 @@
                         </select>
                     </div>
                     <div class="filter-group">
+                        <label>Size</label>
+                        <select class="form-select form-select-sm" name="size" id="filter-size">
+                            <option value="">All Sizes</option>
+                            {% for s in ['7','8','9','10','11','12'] %}<option value="{{ s }}" {% if current_filters.size == s %}selected{% endif %}>{{ s }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-group">
                         <label>Color</label>
                         <select class="form-select form-select-sm" name="color" id="filter-color">
                             <option value="">All Colors</option>
