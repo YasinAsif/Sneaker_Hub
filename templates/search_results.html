@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Search: {{ query }}{% endblock %}
+{% block content %}
+<div class="container py-5" style="margin-top:60px">
+    <h1 class="section-title"><i class="bi bi-search text-accent"></i> Search Results</h1>
+    {% if query %}<p class="section-subtitle">Showing results for "<strong>{{ query }}</strong>"{% if products %} — {{ products.total }} found{% endif %}</p>{% endif %}
+    {% if products and products.items %}
+    <div class="row g-4" id="search-results-grid">
+        {% for p in products.items %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-search-{{ p.id }}">
+                <div class="card-img-wrapper">{% if p.images_list %}<img src="{{ url_for('static', filename=p.images_list[0]) }}" alt="{{ p.model }}">{% else %}<div class="placeholder-img"><i class="bi bi-lightning-charge"></i></div>{% endif %}</div>
+                <div class="card-body">
+                    <div class="card-brand">{{ p.brand.name }}</div>
+                    <a href="{{ url_for('buyer.product_detail', product_id=p.id) }}" class="text-decoration-none"><h6 class="card-title">{{ p.model }}</h6></a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">${{ "%.2f"|format(p.price) }}</span>
+                        <span class="card-rating">{% for i in range(5) %}<i class="bi bi-star{% if i < p.average_rating|int %}-fill{% endif %}"></i>{% endfor %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if products.pages > 1 %}
+    <nav class="mt-4"><ul class="pagination justify-content-center">
+        <li class="page-item {% if not products.has_prev %}disabled{% endif %}"><a class="page-link" href="{{ url_for('buyer.search', q=query, page=products.prev_num) }}">&laquo;</a></li>
+        {% for p in products.iter_pages() %}{% if p %}<li class="page-item {% if p == products.page %}active{% endif %}"><a class="page-link" href="{{ url_for('buyer.search', q=query, page=p) }}">{{ p }}</a></li>{% else %}<li class="page-item disabled"><span class="page-link">…</span></li>{% endif %}{% endfor %}
+        <li class="page-item {% if not products.has_next %}disabled{% endif %}"><a class="page-link" href="{{ url_for('buyer.search', q=query, page=products.next_num) }}">&raquo;</a></li>
+    </ul></nav>
+    {% endif %}
+    {% else %}
+    <div class="empty-state"><i class="bi bi-search"></i><h4>No results found</h4><p>Try different keywords or <a href="{{ url_for('buyer.catalog') }}">browse catalog</a></p></div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Flask stuff
+instance/
+.webassets-cache
+
+# Environment variables
+.env
+.flaskenv
+
+# Local Database
+database.db
+database.db-journal
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Temporary uploads (Render ephemeral storage will wipe anyway, but good to ignore)
+static/uploads/

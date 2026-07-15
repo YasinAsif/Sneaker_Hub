@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="container py-5" style="margin-top:60px">
+    <h1 class="section-title"><i class="bi bi-person text-accent"></i> My Profile</h1>
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="profile-card">
+                <form method="POST" enctype="multipart/form-data" id="form-profile">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="text-center mb-4">
+                        <div class="placeholder-img mx-auto" style="width:120px;height:120px;border-radius:50%;background:var(--bg-input);font-size:3rem;border:3px solid var(--accent)"><i class="bi bi-person"></i></div>
+                        <div class="mt-2"><input type="file" class="form-control form-control-sm" name="profile_image" id="input-profile-image" accept="image/*" style="max-width:250px;margin:0 auto;background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label text-muted">First Name</label><input type="text" class="form-control" name="first_name" value="{{ current_user.first_name }}" id="input-first-name" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                        <div class="col-md-6"><label class="form-label text-muted">Last Name</label><input type="text" class="form-control" name="last_name" value="{{ current_user.last_name }}" id="input-last-name" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                        <div class="col-md-6"><label class="form-label text-muted">Email</label><input type="email" class="form-control" value="{{ current_user.email }}" disabled style="background:var(--bg-secondary);border-color:var(--border);color:var(--text-muted)"></div>
+                        <div class="col-md-6"><label class="form-label text-muted">Username</label><input type="text" class="form-control" value="{{ current_user.username }}" disabled style="background:var(--bg-secondary);border-color:var(--border);color:var(--text-muted)"></div>
+                        <div class="col-md-6"><label class="form-label text-muted">Phone</label><input type="tel" class="form-control" name="phone" value="{{ current_user.phone or '' }}" id="input-phone" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                        <div class="col-md-6"><label class="form-label text-muted">Country</label><input type="text" class="form-control" name="country" value="{{ current_user.country or '' }}" id="input-country" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                        <div class="col-12"><label class="form-label text-muted">Address</label><textarea class="form-control" name="address" rows="2" id="input-address" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)">{{ current_user.address or '' }}</textarea></div>
+                    </div>
+                    <button type="submit" class="btn btn-accent mt-3" id="btn-update-profile"><i class="bi bi-check"></i> Update Profile</button>
+                </form>
+            </div>
+            <!-- Change Password -->
+            <div class="profile-card mt-4">
+                <h5>Change Password</h5>
+                <form method="POST" action="{{ url_for('buyer.change_password') }}" id="form-change-password">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="row g-3">
+                        <div class="col-md-4"><input type="password" class="form-control" name="current_password" placeholder="Current Password" required id="input-current-pw" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                        <div class="col-md-4"><input type="password" class="form-control" name="new_password" placeholder="New Password" minlength="8" required id="input-new-pw" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                        <div class="col-md-4"><input type="password" class="form-control" name="confirm_password" placeholder="Confirm" required id="input-confirm-pw" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-accent mt-3" id="btn-change-password"><i class="bi bi-key"></i> Change Password</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="profile-card">
+                <h5 class="mb-3">Account Info</h5>
+                <div class="mb-2"><small class="text-muted">Role</small><br><span class="badge bg-accent">{{ current_user.role|capitalize }}</span></div>
+                <div class="mb-2"><small class="text-muted">Member Since</small><br>{{ current_user.created_at.strftime('%B %d, %Y') }}</div>
+            </div>
+            {% if recent_orders %}
+            <div class="profile-card mt-4">
+                <h5 class="mb-3">Recent Orders</h5>
+                {% for o in recent_orders %}
+                <div class="d-flex justify-content-between align-items-center mb-2 pb-2" style="border-bottom:1px solid var(--border)">
+                    <div><span class="fw-bold">#{{ o.id }}</span><br><small class="text-muted">{{ o.created_at.strftime('%b %d') }}</small></div>
+                    <div class="text-end"><span class="text-accent fw-bold">${{ "%.2f"|format(o.total) }}</span><br><span class="status-badge status-{{ o.status|lower }}">{{ o.status }}</span></div>
+                </div>
+                {% endfor %}
+                <a href="{{ url_for('buyer.orders') }}" class="btn btn-outline-accent btn-sm w-100 mt-2">View All Orders</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

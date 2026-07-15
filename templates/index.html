@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero-section" id="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 position-relative z-3">
+                <p class="text-accent fw-bold mb-2 fade-in-up" style="letter-spacing:2px">PREMIUM FOOTWEAR</p>
+                <h1 class="hero-title fade-in-up delay-1">
+                    CURATED<br>SNEAKERS.
+                </h1>
+                <p class="hero-subtitle fade-in-up delay-2">Discover the world's most sought-after sneakers. Premium authentication, exclusive drops, and timeless classics.</p>
+                <div class="d-flex gap-3 flex-wrap fade-in-up delay-3">
+                    <a href="{{ url_for('buyer.catalog') }}" class="btn btn-accent btn-lg px-5" id="btn-shop-now">
+                        Shop Now
+                    </a>
+                    {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-accent btn-lg px-5" id="btn-hero-register">
+                        Join Us
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="hero-stats fade-in-up delay-4">
+                    <div class="hero-stat"><h3>100%</h3><p>Authentic</p></div>
+                    <div class="hero-stat"><h3>24hr</h3><p>Shipping</p></div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="hero-image-container fade-in-up delay-2">
+                    <img src="{{ url_for('static', filename='img/products/hero.png') }}" alt="Premium Sneaker">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════ FEATURED ═══════════ -->
+{% if featured %}
+<section class="container py-5" id="section-featured">
+    <h2 class="section-title"><i class="bi bi-fire text-accent"></i> Featured Sneakers</h2>
+    <p class="section-subtitle">Hand-picked heat from our collection</p>
+    <div class="row g-4">
+        {% for p in featured %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-{{ p.id }}">
+                <div class="card-img-wrapper">
+                    {% if p.images_list %}<img src="{{ url_for('static', filename=p.images_list[0]) }}" alt="{{ p.model }}">{% else %}<div class="placeholder-img"><i class="bi bi-lightning-charge"></i></div>{% endif %}
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">{{ p.brand.name }}</div>
+                    <a href="{{ url_for('buyer.product_detail', product_id=p.id) }}" class="text-decoration-none">
+                        <h6 class="card-title">{{ p.model }}</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">${{ "%.2f"|format(p.price) }}</span>
+                        <span class="card-rating">
+                            {% for i in range(5) %}
+                            <i class="bi bi-star{% if i < p.average_rating|int %}-fill{% endif %}"></i>
+                            {% endfor %}
+                            <span class="text-muted">({{ p.review_count }})</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ═══════════ BRANDS ═══════════ -->
+{% if brands %}
+<section class="container py-5" id="section-brands">
+    <h2 class="section-title"><i class="bi bi-award text-accent"></i> Top Brands</h2>
+    <p class="section-subtitle">Shop by your favorite brand</p>
+    <div class="row g-3">
+        {% for b in brands %}
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="{{ url_for('buyer.catalog', brand=b.slug) }}" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">{{ b.name }}</div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ═══════════ LATEST ═══════════ -->
+{% if latest %}
+<section class="container py-5" id="section-latest">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-title"><i class="bi bi-clock text-accent"></i> Latest Arrivals</h2>
+            <p class="section-subtitle mb-0">Fresh kicks just dropped</p>
+        </div>
+        <a href="{{ url_for('buyer.catalog', sort='newest') }}" class="btn btn-outline-accent" id="link-view-all">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-4">
+        {% for p in latest %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-{{ p.id }}">
+                <div class="card-img-wrapper">
+                    {% if p.images_list %}<img src="{{ url_for('static', filename=p.images_list[0]) }}" alt="{{ p.model }}">{% else %}<div class="placeholder-img"><i class="bi bi-lightning-charge"></i></div>{% endif %}
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">{{ p.brand.name }}</div>
+                    <a href="{{ url_for('buyer.product_detail', product_id=p.id) }}" class="text-decoration-none">
+                        <h6 class="card-title">{{ p.model }}</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">${{ "%.2f"|format(p.price) }}</span>
+                        <span class="card-rating">
+                            {% for i in range(5) %}
+                            <i class="bi bi-star{% if i < p.average_rating|int %}-fill{% endif %}"></i>
+                            {% endfor %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ═══════════ TRENDING ═══════════ -->
+{% if trending %}
+<section class="container py-5" id="section-trending">
+    <h2 class="section-title"><i class="bi bi-graph-up-arrow text-accent"></i> Trending Now</h2>
+    <p class="section-subtitle">Top rated sneakers this season</p>
+    <div class="row g-4">
+        {% for p in trending[:4] %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    {% if p.images_list %}<img src="{{ url_for('static', filename=p.images_list[0]) }}" alt="{{ p.model }}">{% else %}<div class="placeholder-img"><i class="bi bi-lightning-charge"></i></div>{% endif %}
+                    <span class="card-badge">Trending</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">{{ p.brand.name }}</div>
+                    <a href="{{ url_for('buyer.product_detail', product_id=p.id) }}" class="text-decoration-none">
+                        <h6 class="card-title">{{ p.model }}</h6>
+                    </a>
+                    <span class="card-price">${{ "%.2f"|format(p.price) }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}

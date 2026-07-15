@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Add Product{% endblock %}
+{% block content %}
+<div class="container py-5" style="margin-top:60px">
+    <h1 class="section-title"><i class="bi bi-plus-circle text-accent"></i> Add New Product</h1>
+    <div class="profile-card" style="max-width:800px">
+        <form method="POST" enctype="multipart/form-data" id="form-add-product">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row g-3">
+                <div class="col-md-8"><label class="form-label text-muted">Model Name</label><input type="text" class="form-control" name="model" required id="input-model" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                <div class="col-md-4"><label class="form-label text-muted">SKU</label><input type="text" class="form-control" name="sku" required id="input-sku" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                <div class="col-md-6"><label class="form-label text-muted">Brand</label><select class="form-select" name="brand_id" required id="input-brand" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"><option value="">Select Brand</option>{% for b in brands %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select></div>
+                <div class="col-md-6"><label class="form-label text-muted">Category</label><select class="form-select" name="category_id" required id="input-category" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"><option value="">Select Category</option>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select></div>
+                <div class="col-md-4"><label class="form-label text-muted">Price ($)</label><input type="number" step="0.01" class="form-control" name="price" required id="input-price" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                <div class="col-md-4"><label class="form-label text-muted">Stock</label><input type="number" class="form-control" name="stock" value="1" id="input-stock" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                <div class="col-md-4"><label class="form-label text-muted">Release Year</label><input type="number" class="form-control" name="release_year" id="input-year" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                <div class="col-md-4"><label class="form-label text-muted">Color</label><input type="text" class="form-control" name="color" id="input-color" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+                <div class="col-md-4"><label class="form-label text-muted">Gender</label><select class="form-select" name="gender" id="input-gender" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"><option value="Unisex">Unisex</option><option value="Men">Men</option><option value="Women">Women</option></select></div>
+                <div class="col-md-4"><label class="form-label text-muted">Condition</label><select class="form-select" name="condition" id="input-condition" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"><option value="New">New</option><option value="Used">Used</option><option value="Refurbished">Refurbished</option></select></div>
+                <div class="col-12"><label class="form-label text-muted">Sizes</label><div class="d-flex flex-wrap gap-2">{% for s in ['6','6.5','7','7.5','8','8.5','9','9.5','10','10.5','11','11.5','12','13'] %}<div class="form-check"><input class="form-check-input" type="checkbox" name="sizes" value="{{ s }}" id="size-{{ s }}" style="background-color:var(--bg-input);border-color:var(--border)"><label class="form-check-label text-muted" for="size-{{ s }}">{{ s }}</label></div>{% endfor %}</div></div>
+                <div class="col-12"><label class="form-label text-muted">Description</label><textarea class="form-control" name="description" rows="3" id="input-description" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></textarea></div>
+                <div class="col-12"><label class="form-label text-muted">Images (max 5)</label><input type="file" class="form-control" name="images" multiple accept="image/*" id="input-images" style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></div>
+            </div>
+            <div class="mt-4"><button type="submit" class="btn btn-accent" id="btn-submit-product"><i class="bi bi-plus-lg"></i> Add Product</button><a href="{{ url_for('seller.dashboard') }}" class="btn btn-outline-accent ms-2">Cancel</a></div>
+        </form>
+    </div>
+</div>
+{% endblock %}

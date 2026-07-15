@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}{{ product.brand.name }} {{ product.model }}{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/cart.js') }}"></script>{% endblock %}
+{% block content %}
+<div class="container py-5" style="margin-top:60px">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb" style="--bs-breadcrumb-divider-color:var(--text-muted)">
+            <li class="breadcrumb-item"><a href="{{ url_for('buyer.home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('buyer.catalog') }}">Catalog</a></li>
+            <li class="breadcrumb-item active text-muted">{{ product.model }}</li>
+        </ol>
+    </nav>
+    <div class="row g-5">
+        <div class="col-lg-6">
+            <div class="product-gallery">
+                <div class="product-main-image d-flex align-items-center justify-content-center" id="main-image">
+                    {% if product.images_list %}<img src="{{ url_for('static', filename=product.images_list[0]) }}" alt="{{ product.model }}">{% else %}<div class="placeholder-img" style="font-size:6rem"><i class="bi bi-lightning-charge"></i></div>{% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="product-info">
+                <span class="product-brand">{{ product.brand.name }}</span>
+                <h1 class="product-model" id="product-name">{{ product.model }}</h1>
+                <div class="product-rating mb-2">
+                    {% for i in range(5) %}<i class="bi bi-star{% if i < product.average_rating|int %}-fill{% endif %}"></i>{% endfor %}
+                    <span class="text-muted ms-1">({{ product.review_count }} reviews)</span>
+                </div>
+                <div class="product-price mb-3" id="product-price">${{ "%.2f"|format(product.price) }}</div>
+                <p class="text-muted">{{ product.description }}</p>
+                <div class="row g-3 mb-3">
+                    <div class="col-6"><strong class="text-muted small">SKU:</strong> <span>{{ product.sku }}</span></div>
+                    <div class="col-6"><strong class="text-muted small">Condition:</strong> <span>{{ product.condition }}</span></div>
+                    <div class="col-6"><strong class="text-muted small">Color:</strong> <span>{{ product.color }}</span></div>
+                    <div class="col-6"><strong class="text-muted small">Gender:</strong> <span>{{ product.gender }}</span></div>
+                    <div class="col-6"><strong class="text-muted small">Stock:</strong>
+                        <span class="{% if product.stock < 5 %}text-danger{% else %}text-success{% endif %}">{{ product.stock }} available</span>
+                    </div>
+                    {% if product.release_year %}<div class="col-6"><strong class="text-muted small">Year:</strong> <span>{{ product.release_year }}</span></div>{% endif %}
+                </div>
+                {% if product.sizes_list %}
+                <label class="text-muted small fw-bold text-uppercase mb-2 d-block">Select Size</label>
+                <input type="hidden" id="input-size" value="{{ product.sizes_list[0] }}">
+                <div class="size-selector" id="size-selector">
+                    {% for s in product.sizes_list %}<div class="size-btn {% if loop.first %}active{% endif %}" data-size="{{ s }}">{{ s }}</div>{% endfor %}
+                </div>
+                {% endif %}
+                {% if product.stock > 0 %}
+                <div class="d-flex gap-3 mt-4">
+                    <button class="btn btn-accent btn-lg flex-grow-1" id="btn-add-to-cart"
+                            onclick="addToCart({{ product.id }}, document.getElementById('input-size')?.value || '')">
+                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    </button>
+                    {% if current_user.is_authenticated %}
+                    <form method="POST" action="{{ url_for('buyer.wishlist_add') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-outline-accent btn-lg" id="btn-wishlist"
+                                title="{% if in_wishlist %}In Wishlist{% else %}Add to Wishlist{% endif %}">
+                            <i class="bi bi-heart{% if in_wishlist %}-fill{% endif %}"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="alert alert-danger mt-4"><i class="bi bi-exclamation-triangle"></i> Out of Stock</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="mt-5 pt-4 border-top" style="border-color:var(--border)!important" id="section-reviews">
+        <h3 class="section-title"><i class="bi bi-chat-quote text-accent"></i> Reviews ({{ product.review_count }})</h3>
+        {% if current_user.is_authenticated and not user_review %}
+        <div class="review-card mb-4">
+            <h6>Write a Review</h6>
+            <form method="POST" action="{{ url_for('buyer.review_add') }}" id="form-review">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <input type="hidden" name="rating" id="input-rating" value="5">
+                <div class="star-rating mb-3">
+                    {% for i in range(1,6) %}<span class="star {% if i <= 5 %}active{% endif %}" data-rating="{{ i }}"><i class="bi bi-star-fill"></i></span>{% endfor %}
+                </div>
+                <textarea class="form-control mb-3" name="comment" id="input-review-comment" rows="3"
+                          placeholder="Share your thoughts..." style="background:var(--bg-input);border-color:var(--border);color:var(--text-primary)"></textarea>
+                <button type="submit" class="btn btn-accent" id="btn-submit-review"><i class="bi bi-send"></i> Submit Review</button>
+            </form>
+        </div>
+        {% endif %}
+        {% for r in reviews %}
+        <div class="review-card" id="review-{{ r.id }}">
+            <div class="review-header">
+                <div>
+                    <span class="reviewer">{{ r.user.first_name }} {{ r.user.last_name }}</span>
+                    <div class="review-stars">{% for i in range(5) %}<i class="bi bi-star{% if i < r.rating %}-fill{% endif %}"></i>{% endfor %}</div>
+                </div>
+                <span class="review-date">{{ r.created_at.strftime('%b %d, %Y') }}</span>
+            </div>
+            {% if r.comment %}<p class="mb-0 text-muted">{{ r.comment }}</p>{% endif %}
+        </div>
+        {% endfor %}
+        {% if not reviews %}<div class="empty-state py-3"><p class="text-muted">No reviews yet. Be the first to review!</p></div>{% endif %}
+    </div>
+
+    <!-- Related Products -->
+    {% if related %}
+    <div class="mt-5 pt-4 border-top" style="border-color:var(--border)!important">
+        <h3 class="section-title"><i class="bi bi-collection text-accent"></i> You Might Also Like</h3>
+        <div class="row g-4">
+            {% for p in related %}
+            <div class="col-xl-3 col-md-6">
+                <div class="product-card">
+                    <div class="card-img-wrapper">{% if p.images_list %}<img src="{{ url_for('static', filename=p.images_list[0]) }}" alt="{{ p.model }}">{% else %}<div class="placeholder-img"><i class="bi bi-lightning-charge"></i></div>{% endif %}</div>
+                    <div class="card-body">
+                        <div class="card-brand">{{ p.brand.name }}</div>
+                        <a href="{{ url_for('buyer.product_detail', product_id=p.id) }}" class="text-decoration-none"><h6 class="card-title">{{ p.model }}</h6></a>
+                        <span class="card-price">${{ "%.2f"|format(p.price) }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

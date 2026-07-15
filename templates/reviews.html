@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}My Reviews{% endblock %}
+{% block content %}
+<div class="container py-5" style="margin-top:60px">
+    <h1 class="section-title"><i class="bi bi-star text-accent"></i> My Reviews</h1>
+    {% if reviews %}
+    {% for r in reviews %}
+    <div class="review-card" id="review-{{ r.id }}">
+        <div class="review-header">
+            <div>
+                <a href="{{ url_for('buyer.product_detail', product_id=r.product.id) }}" class="fw-bold text-decoration-none">{{ r.product.brand.name }} {{ r.product.model }}</a>
+                <div class="review-stars">{% for i in range(5) %}<i class="bi bi-star{% if i < r.rating %}-fill{% endif %}"></i>{% endfor %}</div>
+            </div>
+            <span class="review-date">{{ r.created_at.strftime('%b %d, %Y') }}</span>
+        </div>
+        {% if r.comment %}<p class="mb-0 text-muted">{{ r.comment }}</p>{% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state"><i class="bi bi-star"></i><h4>No reviews yet</h4><p>Purchase sneakers and share your thoughts!</p></div>
+    {% endif %}
+</div>
+{% endblock %}

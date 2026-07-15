@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/cart.js') }}"></script>{% endblock %}
+{% block content %}
+<div class="container py-5" style="margin-top:60px">
+    <h1 class="section-title"><i class="bi bi-cart3 text-accent"></i> Shopping Cart</h1>
+    {% if cart_items %}
+    <div class="row g-4">
+        <div class="col-lg-8">
+            {% for item in cart_items %}
+            <div class="cart-item" id="cart-item-{{ item.id }}">
+                {% if item.product.images_list %}<img src="{{ url_for('static', filename=item.product.images_list[0]) }}" alt="{{ item.product.model }}" style="width:100px;height:100px;border-radius:var(--radius-sm);object-fit:contain">{% else %}<div class="placeholder-img" style="width:100px;height:100px;border-radius:var(--radius-sm);background:var(--bg-input);font-size:2rem"><i class="bi bi-lightning-charge"></i></div>{% endif %}
+                <div class="flex-grow-1">
+                    <div class="card-brand">{{ item.product.brand.name }}</div>
+                    <h6 class="mb-1"><a href="{{ url_for('buyer.product_detail', product_id=item.product.id) }}" class="text-decoration-none text-primary">{{ item.product.model }}</a></h6>
+                    {% if item.size %}<small class="text-muted">Size: {{ item.size }}</small>{% endif %}
+                    <div class="card-price mt-1">${{ "%.2f"|format(item.product.price) }}</div>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateCart({{ item.id }}, {{ item.quantity - 1 }})" id="btn-qty-minus-{{ item.id }}">−</button>
+                        <span class="fw-bold" id="qty-{{ item.id }}">{{ item.quantity }}</span>
+                        <button class="qty-btn" onclick="updateCart({{ item.id }}, {{ item.quantity + 1 }})" id="btn-qty-plus-{{ item.id }}">+</button>
+                    </div>
+                    <div class="fw-bold text-accent" id="item-subtotal-{{ item.id }}">${{ "%.2f"|format(item.subtotal) }}</div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart({{ item.id }})" id="btn-remove-{{ item.id }}"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-4">
+            <div class="cart-summary" id="cart-summary">
+                <h5 class="mb-3">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Subtotal</span><span id="cart-subtotal">${{ "%.2f"|format(subtotal) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Tax (8%)</span><span id="cart-tax">${{ "%.2f"|format(tax) }}</span></div>
+                <div class="d-flex justify-content-between mb-3"><span class="text-muted">Shipping</span><span id="cart-shipping">${{ "%.2f"|format(shipping) }}</span></div>
+                <hr style="border-color:var(--border)">
+                <div class="d-flex justify-content-between mb-4"><strong>Total</strong><strong class="text-accent fs-5" id="cart-total">${{ "%.2f"|format(total) }}</strong></div>
+                <a href="{{ url_for('buyer.checkout') }}" class="btn btn-accent w-100 py-2" id="btn-checkout"><i class="bi bi-credit-card"></i> Proceed to Checkout</a>
+                <a href="{{ url_for('buyer.catalog') }}" class="btn btn-outline-accent w-100 mt-2">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="bi bi-cart-x"></i><h4>Your cart is empty</h4><p>Start shopping to add items!</p><a href="{{ url_for('buyer.catalog') }}" class="btn btn-accent mt-2">Browse Catalog</a></div>
+    {% endif %}
+</div>
+{% endblock %}

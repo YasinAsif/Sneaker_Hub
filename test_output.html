@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SneakerHub — Buy, Sell & Collect Authentic Sneakers. The premier marketplace for sneaker enthusiasts.">
+    <title>Home — Buy. Sell. Collect.</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+</head>
+<body>
+    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="navbar-main">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/" id="link-home">
+                <i class="bi bi-lightning-charge-fill text-accent"></i> SneakerHub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation" id="btn-navbar-toggle">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Search bar -->
+                <form class="d-flex mx-auto position-relative search-form" action="/search" method="GET" id="form-search">
+                    <input class="form-control search-input" type="search" name="q"
+                           placeholder="Search sneakers..." aria-label="Search"
+                           id="input-search" autocomplete="off"
+                           value="">
+                    <button class="btn btn-accent" type="submit" id="btn-search">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <div class="search-results-dropdown" id="search-results-dropdown"></div>
+                </form>
+
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" id="link-nav-home">
+                            <i class="bi bi-house-door"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/catalog" id="link-catalog">
+                            <i class="bi bi-grid"></i> Catalog
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login" id="link-login">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-accent btn-sm ms-2" href="/register" id="link-register">
+                            Sign Up
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════ FLASH MESSAGES ═══════════════════ -->
+    <div class="container mt-5 pt-4">
+        
+        
+        
+    </div>
+
+    <!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
+    <main class="main-content">
+        
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero-section" id="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 position-relative z-3">
+                <p class="text-accent fw-bold mb-2 fade-in-up" style="letter-spacing:2px">PREMIUM FOOTWEAR</p>
+                <h1 class="hero-title fade-in-up delay-1">
+                    CURATED<br>SNEAKERS.
+                </h1>
+                <p class="hero-subtitle fade-in-up delay-2">Discover the world's most sought-after sneakers. Premium authentication, exclusive drops, and timeless classics.</p>
+                <div class="d-flex gap-3 flex-wrap fade-in-up delay-3">
+                    <a href="/catalog" class="btn btn-accent btn-lg px-5" id="btn-shop-now">
+                        Shop Now
+                    </a>
+                    
+                    <a href="/register" class="btn btn-outline-accent btn-lg px-5" id="btn-hero-register">
+                        Join Us
+                    </a>
+                    
+                </div>
+                <div class="hero-stats fade-in-up delay-4">
+                    <div class="hero-stat"><h3>100%</h3><p>Authentic</p></div>
+                    <div class="hero-stat"><h3>24hr</h3><p>Shipping</p></div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="hero-image-container fade-in-up delay-2">
+                    <img src="/static/img/products/hero.png" alt="Premium Sneaker">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════ FEATURED ═══════════ -->
+
+<section class="container py-5" id="section-featured">
+    <h2 class="section-title"><i class="bi bi-fire text-accent"></i> Featured Sneakers</h2>
+    <p class="section-subtitle">Hand-picked heat from our collection</p>
+    <div class="row g-4">
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-1">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Air Max 90">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Nike</div>
+                    <a href="/product/1" class="text-decoration-none">
+                        <h6 class="card-title">Air Max 90</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$130.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(0)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-2">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Air Force 1 Low">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Nike</div>
+                    <a href="/product/2" class="text-decoration-none">
+                        <h6 class="card-title">Air Force 1 Low</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$110.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(1)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-3">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Dunk Low Retro">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Nike</div>
+                    <a href="/product/3" class="text-decoration-none">
+                        <h6 class="card-title">Dunk Low Retro</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$115.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(1)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-4">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/basketball.png" alt="Air Jordan 1 High OG">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Jordan</div>
+                    <a href="/product/4" class="text-decoration-none">
+                        <h6 class="card-title">Air Jordan 1 High OG</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$180.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(0)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-5">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/basketball.png" alt="Air Jordan 4 Retro">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Jordan</div>
+                    <a href="/product/5" class="text-decoration-none">
+                        <h6 class="card-title">Air Jordan 4 Retro</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$210.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(0)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-8">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Yeezy Boost 350 V2">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Adidas</div>
+                    <a href="/product/8" class="text-decoration-none">
+                        <h6 class="card-title">Yeezy Boost 350 V2</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$230.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(1)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-11">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="550">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">New Balance</div>
+                    <a href="/product/11" class="text-decoration-none">
+                        <h6 class="card-title">550</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$130.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(0)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-product-15">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/running.png" alt="2002R">
+                    <span class="card-badge">Featured</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">New Balance</div>
+                    <a href="/product/15" class="text-decoration-none">
+                        <h6 class="card-title">2002R</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$150.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <span class="text-muted">(1)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+
+<!-- ═══════════ BRANDS ═══════════ -->
+
+<section class="container py-5" id="section-brands">
+    <h2 class="section-title"><i class="bi bi-award text-accent"></i> Top Brands</h2>
+    <p class="section-subtitle">Shop by your favorite brand</p>
+    <div class="row g-3">
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=nike" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Nike</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=adidas" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Adidas</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=new-balance" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">New Balance</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=puma" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Puma</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=asics" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">ASICS</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=converse" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Converse</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=reebok" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Reebok</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=vans" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Vans</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=jordan" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Jordan</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-4">
+            <a href="/catalog?brand=under-armour" class="text-decoration-none">
+                <div class="brand-card">
+                    <i class="bi bi-hexagon-fill text-accent" style="font-size:2rem"></i>
+                    <div class="brand-name text-primary">Under Armour</div>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+</section>
+
+
+<!-- ═══════════ LATEST ═══════════ -->
+
+<section class="container py-5" id="section-latest">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="section-title"><i class="bi bi-clock text-accent"></i> Latest Arrivals</h2>
+            <p class="section-subtitle mb-0">Fresh kicks just dropped</p>
+        </div>
+        <a href="/catalog?sort=newest" class="btn btn-outline-accent" id="link-view-all">View All <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="row g-4">
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-49">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/running.png" alt="FuelCell Rebel v3">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">New Balance</div>
+                    <a href="/product/49" class="text-decoration-none">
+                        <h6 class="card-title">FuelCell Rebel v3</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$130.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-50">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/basketball.png" alt="Clyde All-Pro">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Puma</div>
+                    <a href="/product/50" class="text-decoration-none">
+                        <h6 class="card-title">Clyde All-Pro</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$130.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-47">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Air Max Plus">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Nike</div>
+                    <a href="/product/47" class="text-decoration-none">
+                        <h6 class="card-title">Air Max Plus</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$175.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-48">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Samba OG">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Adidas</div>
+                    <a href="/product/48" class="text-decoration-none">
+                        <h6 class="card-title">Samba OG</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$100.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-45">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Half Cab">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Vans</div>
+                    <a href="/product/45" class="text-decoration-none">
+                        <h6 class="card-title">Half Cab</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$75.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-46">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Project Rock 5">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Under Armour</div>
+                    <a href="/product/46" class="text-decoration-none">
+                        <h6 class="card-title">Project Rock 5</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$150.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-44">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/basketball.png" alt="Question Mid">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Reebok</div>
+                    <a href="/product/44" class="text-decoration-none">
+                        <h6 class="card-title">Question Mid</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$140.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card" id="card-latest-42">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Gel-Lyte III">
+                    <span class="card-badge">New</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">ASICS</div>
+                    <a href="/product/42" class="text-decoration-none">
+                        <h6 class="card-title">Gel-Lyte III</h6>
+                    </a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="card-price">$120.00</span>
+                        <span class="card-rating">
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                            <i class="bi bi-star-fill"></i>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+
+<!-- ═══════════ TRENDING ═══════════ -->
+
+<section class="container py-5" id="section-trending">
+    <h2 class="section-title"><i class="bi bi-graph-up-arrow text-accent"></i> Trending Now</h2>
+    <p class="section-subtitle">Top rated sneakers this season</p>
+    <div class="row g-4">
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="574 Classic">
+                    <span class="card-badge">Trending</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">New Balance</div>
+                    <a href="/product/13" class="text-decoration-none">
+                        <h6 class="card-title">574 Classic</h6>
+                    </a>
+                    <span class="card-price">$90.00</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/running.png" alt="RS-X3">
+                    <span class="card-badge">Trending</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Puma</div>
+                    <a href="/product/16" class="text-decoration-none">
+                        <h6 class="card-title">RS-X3</h6>
+                    </a>
+                    <span class="card-price">$110.00</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/lifestyle.png" alt="Club C 85">
+                    <span class="card-badge">Trending</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Reebok</div>
+                    <a href="/product/24" class="text-decoration-none">
+                        <h6 class="card-title">Club C 85</h6>
+                    </a>
+                    <span class="card-price">$80.00</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="product-card">
+                <div class="card-img-wrapper">
+                    <img src="/static/img/products/running.png" alt="React Infinity Run">
+                    <span class="card-badge">Trending</span>
+                </div>
+                <div class="card-body">
+                    <div class="card-brand">Nike</div>
+                    <a href="/product/35" class="text-decoration-none">
+                        <h6 class="card-title">React Infinity Run</h6>
+                    </a>
+                    <span class="card-price">$160.00</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+
+    </main>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <footer class="site-footer" id="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-brand"><i class="bi bi-lightning-charge-fill text-accent"></i> SneakerHub</h5>
+                    <p class="text-muted">Buy. Sell. Collect. Authentic Sneakers.<br>The premier marketplace for sneaker enthusiasts worldwide.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6>Shop</h6>
+                    <ul class="footer-links">
+                        <li><a href="/catalog">All Sneakers</a></li>
+                        <li><a href="/catalog?sort=newest">New Arrivals</a></li>
+                        <li><a href="/catalog?gender=Men">Men</a></li>
+                        <li><a href="/catalog?gender=Women">Women</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6>Help</h6>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h6>Newsletter</h6>
+                    <p class="text-muted small">Get the latest drops and exclusive deals.</p>
+                    <form class="newsletter-form" id="form-newsletter" onsubmit="event.preventDefault(); showToast('Thanks for subscribing!', 'success');">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="your@email.com" id="input-newsletter-email">
+                            <button class="btn btn-accent" type="submit" id="btn-newsletter">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="mt-4">
+            <div class="text-center text-muted small py-2">
+                &copy; 2026 SneakerHub. All rights reserved. Built for Software Engineering.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"></div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="modal-delete-confirm" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning"></i> Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-delete-body">
+                    Are you sure you want to delete this item? This action cannot be undone.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-cancel-delete">Cancel</button>
+                    <form id="form-delete-confirm" method="POST" action="">
+                        <input type="hidden" name="csrf_token" value="IjVmZjA4MTVhZDIyODk1NmQ1OTcwOWZiYTMxNjBmY2M5YWVmODJkZGMi.alfG7Q.1GJBUOAtiS1p7hQ52u7ViGtfwTY">
+                        <button type="submit" class="btn btn-danger" id="btn-confirm-delete">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/search.js"></script>
+    
+</body>
+</html>

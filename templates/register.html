@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block extra_js %}<script src="{{ url_for('static', filename='js/validation.js') }}"></script>{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card" style="max-width:600px">
+        <h2><i class="bi bi-person-plus-fill text-accent"></i> Create Account</h2>
+        <p class="auth-subtitle">Join the SneakerHub community</p>
+        <form method="POST" id="form-register">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="input-first-name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="input-first-name" name="first_name"
+                           value="{{ first_name|default('') }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="input-last-name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="input-last-name" name="last_name"
+                           value="{{ last_name|default('') }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="input-username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="input-username" name="username"
+                           value="{{ username|default('') }}" minlength="3" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="input-email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="input-email" name="email"
+                           value="{{ email|default('') }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="input-password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="input-password" name="password"
+                           minlength="8" required>
+                    <div class="mt-1" style="height:4px;background:var(--border);border-radius:2px">
+                        <div id="password-strength" style="height:100%;width:0;border-radius:2px;transition:all .3s"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="input-confirm-password" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="input-confirm-password" name="confirm_password" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="input-phone" class="form-label">Phone <span class="text-muted">(optional)</span></label>
+                    <input type="tel" class="form-control" id="input-phone" name="phone" value="{{ phone|default('') }}">
+                </div>
+                <div class="col-md-6">
+                    <label for="input-country" class="form-label">Country <span class="text-muted">(optional)</span></label>
+                    <input type="text" class="form-control" id="input-country" name="country" value="{{ country|default('') }}">
+                </div>
+                <div class="col-12">
+                    <label for="input-role" class="form-label">I want to</label>
+                    <select class="form-select" id="input-role" name="role">
+                        <option value="buyer" {% if role|default('buyer') == 'buyer' %}selected{% endif %}>Buy Sneakers</option>
+                        <option value="seller" {% if role|default('') == 'seller' %}selected{% endif %}>Sell Sneakers</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-accent w-100 py-2 mt-4 mb-3" id="btn-submit-register">
+                <i class="bi bi-person-plus"></i> Create Account
+            </button>
+        </form>
+        <p class="text-center text-muted mb-0">Already have an account? <a href="{{ url_for('auth.login') }}" id="link-to-login">Sign In</a></p>
+    </div>
+</div>
+{% endblock %}

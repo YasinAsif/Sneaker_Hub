@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<div class="container py-5" style="margin-top:60px">
+    <h1 class="section-title"><i class="bi bi-credit-card text-accent"></i> Checkout</h1>
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="profile-card checkout-form">
+                <h5 class="mb-3">Shipping Information</h5>
+                <form method="POST" id="form-checkout">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="mb-3">
+                        <label for="input-address" class="form-label text-muted">Shipping Address</label>
+                        <textarea class="form-control" id="input-address" name="address" rows="3" required>{{ current_user.address or '' }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="input-phone" class="form-label text-muted">Phone Number</label>
+                        <input type="tel" class="form-control" id="input-phone" name="phone" value="{{ current_user.phone or '' }}" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="input-payment" class="form-label text-muted">Payment Method</label>
+                        <select class="form-select" id="input-payment" name="payment_method">
+                            <option value="Cash on Delivery">Cash on Delivery</option>
+                            <option value="Credit Card">Credit Card</option>
+                            <option value="PayPal">PayPal</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-accent btn-lg w-100" id="btn-place-order"><i class="bi bi-check-circle"></i> Place Order</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="cart-summary">
+                <h5 class="mb-3">Order Summary</h5>
+                {% for item in cart_items %}
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div><span class="fw-bold">{{ item.product.model }}</span><br><small class="text-muted">Qty: {{ item.quantity }}{% if item.size %} | Size: {{ item.size }}{% endif %}</small></div>
+                    <span>${{ "%.2f"|format(item.subtotal) }}</span>
+                </div>
+                {% endfor %}
+                <hr style="border-color:var(--border)">
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Subtotal</span><span>${{ "%.2f"|format(subtotal) }}</span></div>
+                <div class="d-flex justify-content-between mb-2"><span class="text-muted">Tax</span><span>${{ "%.2f"|format(tax) }}</span></div>
+                <div class="d-flex justify-content-between mb-3"><span class="text-muted">Shipping</span><span>${{ "%.2f"|format(shipping) }}</span></div>
+                <hr style="border-color:var(--border)">
+                <div class="d-flex justify-content-between"><strong>Total</strong><strong class="text-accent fs-5">${{ "%.2f"|format(total) }}</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
