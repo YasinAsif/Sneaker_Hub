@@ -10,6 +10,11 @@ def setup_driver():
     driver.maximize_window()
     return driver
 
+def js_click(driver, by, value):
+    """Click an element using JavaScript to bypass overlap/interception."""
+    element = driver.find_element(by, value)
+    driver.execute_script("arguments[0].click();", element)
+
 def test_valid_registration():
     driver = setup_driver()
     try:
@@ -22,15 +27,17 @@ def test_valid_registration():
         username = f"testuser_{rand_id}"
         email = f"test_{rand_id}@sneakerhub.com"
         
+        driver.find_element(By.ID, "input-first-name").send_keys("Test")
+        driver.find_element(By.ID, "input-last-name").send_keys("User")
         driver.find_element(By.ID, "input-username").send_keys(username)
         driver.find_element(By.ID, "input-email").send_keys(email)
         driver.find_element(By.ID, "input-password").send_keys("SecurePass123!")
         driver.find_element(By.ID, "input-confirm-password").send_keys("SecurePass123!")
-        driver.find_element(By.ID, "btn-submit-register").click()
+        js_click(driver, By.ID, "btn-submit-register")
         time.sleep(3)
         
-        # Verify redirect to login or dashboard
-        assert "Login" in driver.title or "Login" in driver.page_source or "Home" in driver.page_source, "Failed to register successfully."
+        # Verify redirect to login page
+        assert "login" in driver.current_url or "Login" in driver.title, "Failed to redirect to login page."
         print("PASS: Valid Registration")
     finally:
         driver.quit()
@@ -43,12 +50,14 @@ def test_duplicate_email():
         time.sleep(2)
         
         # Using the buyer1@sneakerhub.com which exists in the seeded db
+        driver.find_element(By.ID, "input-first-name").send_keys("Test")
+        driver.find_element(By.ID, "input-last-name").send_keys("User")
         driver.find_element(By.ID, "input-username").send_keys("new_username_123")
         driver.find_element(By.ID, "input-email").send_keys("buyer1@sneakerhub.com")
         driver.find_element(By.ID, "input-password").send_keys("SecurePass123!")
         driver.find_element(By.ID, "input-confirm-password").send_keys("SecurePass123!")
-        driver.find_element(By.ID, "btn-submit-register").click()
-        time.sleep(2)
+        js_click(driver, By.ID, "btn-submit-register")
+        time.sleep(3)
         
         # Verify error
         page_source = driver.page_source
@@ -64,12 +73,14 @@ def test_duplicate_username():
         driver.get(f"{BASE_URL}/register")
         time.sleep(2)
         
+        driver.find_element(By.ID, "input-first-name").send_keys("Test")
+        driver.find_element(By.ID, "input-last-name").send_keys("User")
         driver.find_element(By.ID, "input-username").send_keys("buyer1") # Seeded user
         driver.find_element(By.ID, "input-email").send_keys(f"random_{random.randint(100,999)}@sneakerhub.com")
         driver.find_element(By.ID, "input-password").send_keys("SecurePass123!")
         driver.find_element(By.ID, "input-confirm-password").send_keys("SecurePass123!")
-        driver.find_element(By.ID, "btn-submit-register").click()
-        time.sleep(2)
+        js_click(driver, By.ID, "btn-submit-register")
+        time.sleep(3)
         
         page_source = driver.page_source
         assert "already taken" in page_source.lower() or "exists" in page_source.lower(), "Duplicate username error not displayed."
@@ -84,14 +95,17 @@ def test_weak_password():
         driver.get(f"{BASE_URL}/register")
         time.sleep(2)
         
+        driver.find_element(By.ID, "input-first-name").send_keys("Test")
+        driver.find_element(By.ID, "input-last-name").send_keys("User")
         driver.find_element(By.ID, "input-username").send_keys("weakpassuser")
         driver.find_element(By.ID, "input-email").send_keys("weakpass@sneakerhub.com")
         driver.find_element(By.ID, "input-password").send_keys("123")
         driver.find_element(By.ID, "input-confirm-password").send_keys("123")
-        driver.find_element(By.ID, "btn-submit-register").click()
-        time.sleep(2)
+        js_click(driver, By.ID, "btn-submit-register")
+        time.sleep(3)
         
-        assert "Register" in driver.title or "Register" in driver.page_source, "Weak password was accepted."
+        # Verify that we stayed on register page due to weak password or HTML5 validation
+        assert "register" in driver.current_url or "Register" in driver.title, "Weak password was accepted."
         print("PASS: Weak Password")
     finally:
         driver.quit()
@@ -103,14 +117,16 @@ def test_invalid_email():
         driver.get(f"{BASE_URL}/register")
         time.sleep(2)
         
+        driver.find_element(By.ID, "input-first-name").send_keys("Test")
+        driver.find_element(By.ID, "input-last-name").send_keys("User")
         driver.find_element(By.ID, "input-username").send_keys("invalidemailuser")
         driver.find_element(By.ID, "input-email").send_keys("not-an-email")
         driver.find_element(By.ID, "input-password").send_keys("SecurePass123!")
         driver.find_element(By.ID, "input-confirm-password").send_keys("SecurePass123!")
-        driver.find_element(By.ID, "btn-submit-register").click()
-        time.sleep(2)
+        js_click(driver, By.ID, "btn-submit-register")
+        time.sleep(3)
         
-        assert "Register" in driver.title or "Register" in driver.page_source, "Invalid email was accepted."
+        assert "register" in driver.current_url or "Register" in driver.title, "Invalid email was accepted."
         print("PASS: Invalid Email")
     finally:
         driver.quit()
@@ -122,10 +138,10 @@ def test_empty_fields():
         driver.get(f"{BASE_URL}/register")
         time.sleep(2)
         
-        driver.find_element(By.ID, "btn-submit-register").click()
+        js_click(driver, By.ID, "btn-submit-register")
         time.sleep(2)
         
-        assert "Register" in driver.title or "Register" in driver.page_source, "Empty fields were accepted."
+        assert "register" in driver.current_url or "Register" in driver.title, "Empty fields were accepted."
         print("PASS: Empty Fields")
     finally:
         driver.quit()

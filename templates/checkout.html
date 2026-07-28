@@ -15,7 +15,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="input-phone" class="form-label text-muted">Phone Number</label>
-                        <input type="tel" class="form-control" id="input-phone" name="phone" value="{{ current_user.phone or '' }}" required>
+                        <input type="tel" class="form-control" id="input-phone" name="phone" value="{{ current_user.phone or '' }}" pattern="[0-9\-\+\s\(\)]{7,20}" title="Please enter a valid phone number (at least 7 digits)" required>
                     </div>
                     <div class="mb-4">
                         <label for="input-payment" class="form-label text-muted">Payment Method</label>

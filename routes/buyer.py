@@ -230,6 +230,15 @@ def checkout():
             flash('Address and phone are required.', 'danger')
             return render_template('checkout.html', cart_items=cart_items,
                                    subtotal=subtotal, tax=tax, shipping=shipping, total=total)
+        
+        # Validate phone number: only digits, spaces, -, +, () allowed, 7 to 15 digits
+        import re
+        clean_phone = re.sub(r'[\s\-\+\(\)]', '', phone)
+        if not clean_phone.isdigit() or len(clean_phone) < 7 or len(clean_phone) > 15:
+            flash('Please enter a valid phone number.', 'danger')
+            return render_template('checkout.html', cart_items=cart_items,
+                                   subtotal=subtotal, tax=tax, shipping=shipping, total=total)
+
         order = Order(buyer_id=current_user.id, subtotal=round(subtotal, 2), tax=tax,
                       shipping=shipping, total=total, address=address, phone=phone,
                       payment_method=payment_method)

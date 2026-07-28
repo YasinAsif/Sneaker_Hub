@@ -9,12 +9,21 @@ def setup_driver():
     driver.maximize_window()
     return driver
 
+def js_click(driver, by, value):
+    """Click an element using JavaScript to bypass overlap/interception."""
+    element = driver.find_element(by, value)
+    driver.execute_script("arguments[0].click();", element)
+
+def js_click_elem(driver, element):
+    """Click a WebElement using JavaScript."""
+    driver.execute_script("arguments[0].click();", element)
+
 def admin_login(driver):
     driver.get(f"{BASE_URL}/login")
     time.sleep(2)
     driver.find_element(By.ID, "input-login-id").send_keys("admin")
     driver.find_element(By.ID, "input-password").send_keys("Admin123!")
-    driver.find_element(By.ID, "btn-submit-login").click()
+    js_click(driver, By.ID, "btn-submit-login")
     time.sleep(2)
 
 def test_admin_login():
@@ -52,7 +61,8 @@ def test_delete_product():
         
         try:
             delete_form = driver.find_element(By.XPATH, "//form[contains(@action, '/admin/delete-product/')]")
-            delete_form.find_element(By.TAG_NAME, "button").click()
+            btn = delete_form.find_element(By.TAG_NAME, "button")
+            js_click_elem(driver, btn)
             time.sleep(2)
             
             try:
@@ -81,7 +91,8 @@ def test_delete_user():
             # We look for a delete form for any user. In reality, we shouldn't delete the admin itself.
             # Assuming the UI has a 'Delete' button per row.
             delete_form = driver.find_element(By.XPATH, "//form[contains(@action, '/admin/delete-user/')]")
-            delete_form.find_element(By.TAG_NAME, "button").click()
+            btn = delete_form.find_element(By.TAG_NAME, "button")
+            js_click_elem(driver, btn)
             time.sleep(2)
             
             try:
@@ -105,11 +116,12 @@ def test_admin_logout():
         
         try:
             logout_link = driver.find_element(By.XPATH, "//a[contains(text(), 'Logout') or contains(@href, 'logout')]")
-            logout_link.click()
+            js_click_elem(driver, logout_link)
         except:
-            driver.find_element(By.ID, "dropdownUser").click()
+            js_click(driver, By.ID, "dropdownUser")
             time.sleep(1)
-            driver.find_element(By.XPATH, "//a[contains(@href, 'logout')]").click()
+            logout_link = driver.find_element(By.XPATH, "//a[contains(@href, 'logout')]")
+            js_click_elem(driver, logout_link)
             
         time.sleep(2)
         assert "Login" in driver.page_source or "Sign Up" in driver.page_source, "Failed to logout."
