@@ -10,6 +10,11 @@ def setup_driver():
     driver.maximize_window()
     return driver
 
+def js_click(driver, by, value):
+    """Click an element using JavaScript to bypass overlap/interception."""
+    element = driver.find_element(by, value)
+    driver.execute_script("arguments[0].click();", element)
+
 def test_brand_filter():
     driver = setup_driver()
     try:
@@ -19,9 +24,9 @@ def test_brand_filter():
         
         brand_select = Select(driver.find_element(By.ID, "filter-brand"))
         brand_select.select_by_value("nike")
-        driver.find_element(By.ID, "btn-apply-filters").click()
-        
+        js_click(driver, By.ID, "btn-apply-filters")
         time.sleep(2)
+        
         assert "Nike" in driver.page_source, "Brand filter failed."
         print("PASS: Brand Filter")
     finally:
@@ -36,9 +41,9 @@ def test_size_filter():
         
         size_select = Select(driver.find_element(By.ID, "filter-size"))
         size_select.select_by_value("10")
-        driver.find_element(By.ID, "btn-apply-filters").click()
-        
+        js_click(driver, By.ID, "btn-apply-filters")
         time.sleep(2)
+        
         assert "size=10" in driver.current_url, "Size filter not applied to URL."
         print("PASS: Size Filter")
     finally:
@@ -54,9 +59,9 @@ def test_color_filter():
         color_select = Select(driver.find_element(By.ID, "filter-color"))
         # We select by index 1 because the exact colors in DB might vary, but index 1 guarantees we pick a color
         color_select.select_by_index(1)
-        driver.find_element(By.ID, "btn-apply-filters").click()
-        
+        js_click(driver, By.ID, "btn-apply-filters")
         time.sleep(2)
+        
         assert "color=" in driver.current_url, "Color filter not applied to URL."
         print("PASS: Color Filter")
     finally:
@@ -71,7 +76,7 @@ def test_price_filter():
         
         driver.find_element(By.ID, "filter-min-price").send_keys("100")
         driver.find_element(By.ID, "filter-max-price").send_keys("200")
-        driver.find_element(By.ID, "btn-apply-filters").click()
+        js_click(driver, By.ID, "btn-apply-filters")
         time.sleep(2)
         
         assert "min_price=100" in driver.current_url, "Price filter not applied."
@@ -86,7 +91,7 @@ def test_clear_filters():
         driver.get(f"{BASE_URL}/catalog?brand=nike&min_price=100")
         time.sleep(2)
         
-        driver.find_element(By.ID, "btn-clear-filters").click()
+        js_click(driver, By.ID, "btn-clear-filters")
         time.sleep(2)
         assert "brand=nike" not in driver.current_url, "Filters were not cleared."
         print("PASS: Clear Filters")

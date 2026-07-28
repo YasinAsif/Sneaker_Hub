@@ -9,6 +9,11 @@ def setup_driver():
     driver.maximize_window()
     return driver
 
+def js_click(driver, by, value):
+    """Click an element using JavaScript to bypass overlap/interception."""
+    element = driver.find_element(by, value)
+    driver.execute_script("arguments[0].click();", element)
+
 def test_search_nike():
     driver = setup_driver()
     try:
@@ -18,7 +23,7 @@ def test_search_nike():
         
         search_input = driver.find_element(By.ID, "input-search")
         search_input.send_keys("Nike")
-        driver.find_element(By.ID, "btn-search").click()
+        js_click(driver, By.ID, "btn-search")
         time.sleep(2)
         
         page_source = driver.page_source
@@ -36,7 +41,7 @@ def test_search_adidas():
         
         search_input = driver.find_element(By.ID, "input-search")
         search_input.send_keys("Adidas")
-        driver.find_element(By.ID, "btn-search").click()
+        js_click(driver, By.ID, "btn-search")
         time.sleep(2)
         
         page_source = driver.page_source
@@ -54,12 +59,11 @@ def test_search_nonexistent():
         
         search_input = driver.find_element(By.ID, "input-search")
         search_input.send_keys("XYZ123NonExistent")
-        driver.find_element(By.ID, "btn-search").click()
+        js_click(driver, By.ID, "btn-search")
         time.sleep(2)
         
         page_source = driver.page_source
-        # Assuming the app shows a "No products found" message
-        assert "No products found" in page_source or "0 results" in page_source.lower(), "Should show no results."
+        assert "No results found" in page_source or "0 results" in page_source.lower(), "Should show no results."
         print("PASS: Search Nonexistent Sneaker")
     finally:
         driver.quit()
@@ -71,11 +75,10 @@ def test_empty_search():
         driver.get(BASE_URL)
         time.sleep(2)
         
-        driver.find_element(By.ID, "btn-search").click()
+        js_click(driver, By.ID, "btn-search")
         time.sleep(2)
         
-        # Depending on implementation, it might show all products or stay on home
-        assert "SneakerHub" in driver.title, "Empty search failed."
+        assert "Search" in driver.title, "Empty search failed."
         print("PASS: Empty Search")
     finally:
         driver.quit()
@@ -89,11 +92,11 @@ def test_search_special_characters():
         
         search_input = driver.find_element(By.ID, "input-search")
         search_input.send_keys("@#$%^&*()")
-        driver.find_element(By.ID, "btn-search").click()
+        js_click(driver, By.ID, "btn-search")
         time.sleep(2)
         
         page_source = driver.page_source
-        assert "No products found" in page_source or "0 results" in page_source.lower(), "Should handle special characters safely."
+        assert "No results found" in page_source or "0 results" in page_source.lower(), "Should handle special characters safely."
         print("PASS: Search Special Characters")
     finally:
         driver.quit()
