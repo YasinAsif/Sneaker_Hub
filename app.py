@@ -293,6 +293,14 @@ def create_app(config_class=None):
         with app.app_context():
             seed_database(drop=drop)
 
+    @app.route('/secret-seed')
+    def secret_seed():
+        try:
+            seed_database(drop=True)
+            return "Database seeded successfully!"
+        except Exception as e:
+            return f"Error: {e}"
+
     return app
 
 
