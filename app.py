@@ -212,7 +212,7 @@ def create_app(config_class=None):
             )
             db.session.add(p)
             products.append(p)
-        db.session.flush()
+        db.session.commit()  # Commit core data (brands, categories, users, products) first
 
         # ── Reviews ──
         import random
@@ -226,18 +226,21 @@ def create_app(config_class=None):
             'Good everyday sneakers. Nothing too flashy but reliable.',
             'Amazing build quality. You can tell these are premium.',
         ]
+        seen_reviews = set()
         for _ in range(40):
+            uid = random.choice(buyers).id
+            pid = random.choice(products).id
+            if (uid, pid) in seen_reviews:
+                continue
+            seen_reviews.add((uid, pid))
             r = Review(
-                user_id=random.choice(buyers).id,
-                product_id=random.choice(products).id,
+                user_id=uid,
+                product_id=pid,
                 rating=random.randint(3, 5),
                 comment=random.choice(comments)
             )
-            try:
-                db.session.add(r)
-                db.session.flush()
-            except Exception:
-                db.session.rollback()
+            db.session.add(r)
+        db.session.flush()
 
         # ── Orders ──
         statuses = ['Pending', 'Processing', 'Shipped', 'Delivered']
